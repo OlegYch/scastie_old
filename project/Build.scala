@@ -8,9 +8,6 @@ object ApplicationBuild extends Build {
   val scalaVersion = "2.10.0"
   val akkaVersion = "2.1.0"
 
-  val appDependencies = Seq(
-    // Add your project dependencies here,
-  )
   val renderer = {
     def akka(module: String) = {
       "com.typesafe.akka" %% ("akka-" + module) % akkaVersion
@@ -24,6 +21,7 @@ object ApplicationBuild extends Build {
         , Keys.libraryDependencies ++= Seq(
           "org.slf4j" % "jul-to-slf4j" % "1.6.6",
           akka("actor"),
+          akka("camel"),
           akka("remote"),
           akka("slf4j"),
           "com.typesafe" % "config" % "1.0.0",
@@ -32,14 +30,15 @@ object ApplicationBuild extends Build {
           scalaIo("file"),
           "org.apache.commons" % "commons-lang3" % "3.1",
           "net.sourceforge.collections" % "collections-generic" % "4.01",
-          "org.scala-lang" % "scala-compiler" % scalaVersion
+          "org.scala-lang" % "scala-compiler" % scalaVersion,
+          "org.apache.camel" % "camel-jetty" % "2.10.3"
         )
       ) ++ StartScriptPlugin.startScriptForClassesSettings
           ++ Seq(Keys.mainClass in Compile := Option("com.olegych.scastie.RendererMain"))
     )
   }
 
-  val main = play.Project(appName, appVersion, appDependencies).settings(
+  val main = play.Project(appName, appVersion).settings(
     (StartScriptPlugin.startScriptForClassesSettings ++
         Seq(Keys.mainClass in Compile := Option("DevNettyServer")
           , Keys.scalaVersion := scalaVersion

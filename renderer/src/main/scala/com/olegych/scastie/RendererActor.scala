@@ -22,7 +22,8 @@ class RendererActor extends Actor with ActorLogging {
   def createKiller(timeout: FiniteDuration): (Actor.Receive) => Actor.Receive = {
     TimeoutActor(timeout, message => {
       message match {
-        case paste: Paste => sender ! paste.copy(output = Some(s"Killed because of timeout $timeout"), content = None)
+        case paste: Paste => sender !
+            paste.copy(output = Some(s"Killed because of timeout $timeout"), content = None)
         case _ => log.info("unknown message {}", message)
       }
       preRestart(FatalFailure, Some(message))

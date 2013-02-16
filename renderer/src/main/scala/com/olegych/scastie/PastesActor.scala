@@ -2,7 +2,6 @@ package com.olegych.scastie
 
 import akka.actor._
 import akka.event.LoggingReceive
-import akka.routing.FromConfig
 import com.olegych.scastie.PastesActor._
 import com.olegych.scastie.PastesActor.PasteProgress
 import com.olegych.scastie.PastesActor.GetPaste
@@ -12,8 +11,8 @@ import com.olegych.scastie.PastesActor.Paste
 /**
   */
 class PastesActor(pastesContainer: PastesContainer, progressActor: ActorRef) extends Actor with ActorLogging {
-  val renderer = context.actorOf(Props[RendererActor].withRouter(FromConfig()), "renderer")
-  val failures = context.actorOf(Props[FailuresActor], "failures")
+  val renderer = ActorsHome.createRenderer
+  val failures = ActorsHome.createFailures
 
   def receive = LoggingReceive {
     case AddPaste(content, uid) =>
