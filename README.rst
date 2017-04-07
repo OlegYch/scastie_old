@@ -95,7 +95,7 @@ The configs and launch scripts were initially created for deployment on OpenShif
 .openshift directory contains hooks to build and start app on git receive. Production specific configs are stored in
 openshift*.conf files and are applied when starting application via openshift hooks.
 
-To test how application will behave when deployed on production, use test-openshift.sh script which
+To test how application will behave when deployed on production, use test-openshift.sh -Dconfig.resource=<resource_name> script which
 mocks OpenShift environment and starts the post-receive hook.
 
 The remote workers can be started via RendererMain class in renderer module. This can be done via sbt or via
