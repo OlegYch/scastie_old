@@ -24,7 +24,7 @@ object Pastes extends Controller {
 
   import play.api.Play.current
 
-import scala.concurrent.ExecutionContext.Implicits.global
+  import scala.concurrent.ExecutionContext.Implicits.global
 
   val system = {
     val classloader = Play.application.classloader
@@ -58,9 +58,11 @@ import scala.concurrent.ExecutionContext.Implicits.global
       Future.successful(Redirect(routes.Application.index())
         .flashing("error" -> form.errors.map(_.message).mkString, "paste" -> paste))
     } else {
-      (renderer ? AddPaste(paste, uid)).mapTo[Paste].map { paste =>
-        Redirect(routes.Pastes.show(paste.id))
-      }
+      val requiredWords = Set("def", "class", "object", "val", "trait", "var")
+      if (requiredWords.forall(w => !paste.contains(w + " "))) Future.successful(Ok) else
+        (renderer ? AddPaste(paste, uid)).mapTo[Paste].map { paste =>
+          Redirect(routes.Pastes.show(paste.id))
+        }
     }
   }
 
