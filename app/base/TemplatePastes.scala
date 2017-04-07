@@ -14,7 +14,7 @@ object TemplatePastes {
   val default = nextPaste( """
 /***
 coursier.CoursierPlugin.projectSettings
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.1"
 */
 object Main extends App {
 
@@ -23,17 +23,17 @@ object Main extends App {
 
   val templates = {
     List(
-      "typelevel" -> nextPaste( """
+      "typelevel(ish)" -> nextPaste( """
 /***
 coursier.CoursierPlugin.projectSettings
-scalaVersion := "2.11.8"
-addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.7.1")
+scalaVersion := "2.12.1"
+addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.3")
 libraryDependencies ++= {
-  val scalazVersion = "7.2.2"
-  val fs2Version = "0.9.0-M3"
-  val shapelessVersion = "2.2.5"
-  val monocleVersion = "1.2.1"
-  val spireVersion = "0.11.0"
+  val scalazVersion = "7.2.10"
+  val fs2Version = "0.9.4"
+  val shapelessVersion = "2.3.2"
+  val monocleVersion = "1.4.0"
+  val spireVersion = "0.13.0"
   Seq(
     "org.scalaz" %% "scalaz-core" % scalazVersion,
     "org.scalaz" %% "scalaz-concurrent" % scalazVersion,
@@ -53,7 +53,7 @@ import spire.math._
 import spire.implicits._
 import spire.random._
 import fs2.{io, text}
-import fs2.util.Task
+import fs2.Task
 import monocle._
 import monocle.syntax._
 import monocle.std.string._
@@ -62,11 +62,11 @@ object Main extends App {
 }
         """)
       ,
-      "typesafe" -> nextPaste( """
+      "lightbend" -> nextPaste( """
 /***
 coursier.CoursierPlugin.projectSettings
-scalaVersion := "2.11.8"
-libraryDependencies ++= Seq("com.typesafe.play" %% "play" % "2.5.3")
+scalaVersion := "2.12.1"
+libraryDependencies ++= Seq("com.typesafe.play" %% "play" % "2.6.0-M3")
 */
 import play.api
 import akka.actor
@@ -87,10 +87,10 @@ object Build extends Build with App {
 }
                           """)
       ,
-      "scala 2.12" -> nextPaste( """
+      "scala 2.11" -> nextPaste( """
 /***
 coursier.CoursierPlugin.projectSettings
-scalaVersion := "2.12.0-M4"
+scalaVersion := "2.11.9"
 */
 object Main extends App {
 
@@ -100,6 +100,7 @@ object Main extends App {
       "dotty" -> nextPaste( """
 /***
 com.felixmulder.dotty.plugin.DottyPlugin.projectSettings
+scalaVersion := "0.1.1-20170402-054a4f9-NIGHTLY"
 */
 object Main extends App {
 
