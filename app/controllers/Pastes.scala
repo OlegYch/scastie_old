@@ -1,5 +1,7 @@
 package controllers
 
+import java.util.regex.Pattern
+
 import akka.actor.Props
 import akka.pattern.ask
 import akka.util.Timeout
@@ -52,15 +54,15 @@ object Pastes extends Controller {
     createPaste(form, Application.uid)
   }
 
+  private val requiredWords = List("def", "class", "object", "val", "trait", "var", "import").map(w => Pattern.compile(s".*\\b$w\\b.*", Pattern.DOTALL))
+
   def createPaste(form: Form[NewPaste], uid: String): Future[Result] = {
     val paste = form("paste").value.get
     if (form.hasErrors) {
       Future.successful(Redirect(routes.Application.index())
         .flashing("error" -> form.errors.map(_.message).mkString, "paste" -> paste))
     } else {
-      val requiredWords = Set("def", "class", "object", "val", "trait", "var", "import")
-      //https://issues.scala-lang.org/browse/SI-6476
-      if (requiredWords.forall(w => !paste.matches(s""".*\\b$w\\b.*"""))) Future.successful(Ok) else
+      if (requiredWords.forall(w => !w.matcher(paste).matches)) Future.successful(Ok) else
         (renderer ? AddPaste(paste, uid)).mapTo[Paste].map { paste =>
           Redirect(routes.Pastes.show(paste.id))
         }
