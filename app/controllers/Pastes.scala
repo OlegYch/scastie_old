@@ -58,8 +58,8 @@ object Pastes extends Controller {
       Future.successful(Redirect(routes.Application.index())
         .flashing("error" -> form.errors.map(_.message).mkString, "paste" -> paste))
     } else {
-      val requiredWords = Set("def", "class", "object", "val", "trait", "var")
-      if (requiredWords.forall(w => !paste.matches(s""".*\\b$w\\b.*"""))) Future.successful(Ok) else
+      val requiredWords = Set("", "class", "object", "val", "trait", "var", "import")
+      if (requiredWords.forall(w => !paste.matches(s""".*\b$w\b.*"""))) Future.successful(Ok) else
         (renderer ? AddPaste(paste, uid)).mapTo[Paste].map { paste =>
           Redirect(routes.Pastes.show(paste.id))
         }
