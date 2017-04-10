@@ -17,7 +17,7 @@ coursier.CoursierPlugin.projectSettings
 scalaVersion := "2.12.1"
 */
 object Main extends App {
-
+  println("Hello World!")
 }
                            """)
 
@@ -37,6 +37,7 @@ libraryDependencies ++= {
   Seq(
     "org.scalaz" %% "scalaz-core" % scalazVersion,
     "org.scalaz" %% "scalaz-concurrent" % scalazVersion,
+    "org.scalaz" %% "scalaz-effect" % scalazVersion,
     "com.chuusai" %% "shapeless" % shapelessVersion,
     "com.github.julien-truffaut" %% "monocle-generic" % monocleVersion,
     "com.github.julien-truffaut" %% "monocle-law" % monocleVersion,
@@ -48,6 +49,7 @@ libraryDependencies ++= {
 }
 */
 import scalaz._, Scalaz._
+import scalaz.effect._
 import shapeless._
 import spire.math._
 import spire.implicits._
@@ -57,8 +59,8 @@ import fs2.Task
 import monocle._
 import monocle.syntax._
 import monocle.std.string._
-object Main extends App {
-
+object Main extends SafeApp {
+  override def runc = IO.putStrLn("Hello" |+|  " World!")
 }
         """)
       ,
@@ -68,10 +70,9 @@ coursier.CoursierPlugin.projectSettings
 scalaVersion := "2.12.1"
 libraryDependencies ++= Seq("com.typesafe.play" %% "play" % "2.6.0-M3")
 */
-import play.api
-import akka.actor
-object Main extends App {
 
+object Main extends App {
+  println(play.api.libs.json.Json.obj("hello" -> "world"))
 }
                                 """)
       ,
@@ -82,8 +83,8 @@ sbtPlugin := true
 */
 import sbt._
 import Keys._
-object Build extends Build with App {
-
+object Build extends Plugin with App {
+  override def projectSettings = Seq(name := "hello")
 }
                           """)
       ,
@@ -93,7 +94,7 @@ coursier.CoursierPlugin.projectSettings
 scalaVersion := "2.11.9"
 */
 object Main extends App {
-
+  println("Hello World!")
 }
                           """)
       ,
@@ -103,7 +104,7 @@ com.felixmulder.dotty.plugin.DottyPlugin.projectSettings
 scalaVersion := "0.1.1-20170402-054a4f9-NIGHTLY"
 */
 object Main extends App {
-
+  println("Hello World!")
 }
                           """)
     )
